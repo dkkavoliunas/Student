@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 using Student.Models;
@@ -14,11 +12,19 @@ namespace Student.Collector
     {
         public static void Main(string[] args)
         {
-            var course = new Course();
+            var course = new Course {GroupCount = 5};
 
-            var url = "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-1-gr/";
-            int groupValue = 1;
 
+            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-1-gr/", 1);
+            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-2-gr/", 2);
+            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-3-gr/", 3);
+            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-4-gr/", 4);
+            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-5-gr/", 5);
+
+        }
+
+        private static void UpdateCourse(Course course, string url, int groupValue)
+        {
             var client = new HttpClient();
             var response = client.GetAsync(url).Result;
 
@@ -49,7 +55,6 @@ namespace Student.Collector
                     continue;
                 }
 
-
                 var info = dataNullable.Value.Split(new[] { "</a><hr>" }, StringSplitOptions.RemoveEmptyEntries)
                     .ToList()
                     .Select(x => x.Split('>').Last().Replace("(", "").Replace(")", ""))
@@ -57,7 +62,6 @@ namespace Student.Collector
 
                 var subjectName = info[0];
                 var lecturer = info[1];
-                Debug.WriteLine(lecturer);
                 var location = info[2];
                 var additionalInfo = info.Length == 4 ? info[3] : "";
 
@@ -66,39 +70,38 @@ namespace Student.Collector
                 var subjectType = GetCourseType(longTitle);
                 var lectureType = GetLectureType(longTitle);
 
-                var subgroupValue = 1;
+                var subgroupValue = 0;
 
                 if (longTitle.Contains("pogrupiai:"))
                 {
                     subgroupValue = int.Parse(longTitle.ToCharArray().Last().ToString());
                 }
 
-
                 if (course.Subjects.FirstOrDefault(x => x.Name == subjectName) == null)
                 {
-                    course.Subjects.Add(new Subject {Name = subjectName, Type = subjectType});
+                    course.Subjects.Add(new Subject { Name = subjectName, Type = subjectType });
                 }
 
-                var subject = course.Subjects.First(x=>x.Name == subjectName);
+                var subject = course.Subjects.First(x => x.Name == subjectName);
 
                 if (subject.Groups.FirstOrDefault(x => x.Value == groupValue) == null)
                 {
-                    subject.Groups.Add(new Group {Value = groupValue, Subject = subject});
+                    subject.Groups.Add(new Group { Value = groupValue, Subject = subject });
                 }
 
                 var group = subject.Groups.First(x => x.Value == groupValue);
 
                 if (group.Subgroups.FirstOrDefault(x => x.Value == subgroupValue) == null)
                 {
-                    group.Subgroups.Add(new Subgroup {Group = group, Value = subgroupValue });
+                    group.Subgroups.Add(new Subgroup { Group = group, Value = subgroupValue });
                 }
 
                 var subgroup = group.Subgroups.First(x => x.Value == subgroupValue);
 
-                subgroup.Lectures.Add(new Lecture {Subgroup = subgroup,EndTime = endDate,StartTime = startDate,LectureType = lectureType,Location = location});
+                subgroup.Lectures.Add(new Lecture { Subgroup = subgroup, EndTime = endDate, StartTime = startDate, LectureType = lectureType, Location = location, Lecturer = lecturer });
             }
-     
         }
+
         private static SubjectType GetCourseType(string longTitle)
         {
             if (longTitle.Contains("(privalomasis)") && !longTitle.Contains("(pasirenkamasis)"))
