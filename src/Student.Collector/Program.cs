@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using HtmlAgilityPack;
@@ -20,6 +22,27 @@ namespace Student.Collector
             UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-3-gr/", 3);
             UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-4-gr/", 4);
             UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-5-gr/", 5);
+
+            RefactorCourse(course);
+        }
+
+        private static void RefactorCourse(Course course)
+        {
+            var subgroups = course.Subjects.SelectMany(x => x.Groups).SelectMany(x=>x.Subgroups).ToArray();
+
+            foreach (var sg in subgroups)
+            {
+                foreach (var lecture in sg.Lectures)
+                {
+                    var subgroupsWithDuplicateLectures = subgroups.Where(x=>x.Lectures.Any(l=>l.Lecturer == lecture.Lecturer && l.EndTime == lecture.EndTime && l.StartTime == lecture.StartTime && l.Id!= lecture.Id));
+                    foreach (var sgd in subgroupsWithDuplicateLectures)
+                    {
+                        sgd.Lectures.Remove(sgd.Lectures.First(l => l.Lecturer == lecture.Lecturer && l.EndTime == lecture.EndTime && l.StartTime == lecture.StartTime && l.Id != lecture.Id));
+                        sgd.Lectures.Add(lecture);
+                        Debug.WriteLine(lecture.Lecturer);
+                    }
+                }
+            }
 
         }
 
