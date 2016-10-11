@@ -17,8 +17,11 @@ namespace Student.Web
        
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<StudentContext>();
             services.AddDbContext<StudentContext>(
                   options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDb;Database=TheStudentDb;Trusted_Connection=true;MultipleActiveResultSets=true;", b => b.MigrationsAssembly("Student.Web")));
+
+          
 
             services.AddMvc();
            
