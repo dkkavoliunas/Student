@@ -1,0 +1,109 @@
+﻿@*@model dynamic
+
+@{
+    Layout = null;
+}*@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/main.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row" id="scheduleHeading">
+        <div class="col-md-4 buttons">
+            <div class="btn btn-default btn-md">Šiandien</div>
+            <div class="btn btn-default btn-md"><</div>
+            <div class="btn btn-default btn-md">></div>
+        </div>
+        <div class="col-md-8"><h2>title</h2></div>
+
+    </div>
+
+    <div class="row">
+        <table class="col-md-12">
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th><h4 class="day">Pirmadienis <span class="dayValue"></span></h4></th>
+                    <th><h4 class="day">Antradienis <span class="dayValue"></span></h4></th>
+                    <th><h4 class="day">Trečiadienis <span class="dayValue"></span></h4></th>
+                    <th><h4 class="day">Ketvirtadienis <span class="dayValue"></span></h4></th>
+                    <th><h4 class="day">Penktadienis <span class="dayValue"></span></h4></th>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="height: 60px">
+                            08
+                        </div>
+                        <div style="height: 60px">
+                            09
+                        </div>
+                        <div style="height: 60px">
+                            10
+                        </div>
+                        <div style="height: 60px">
+                            11
+                        </div>
+                        <div style="height: 60px">
+                            12
+                        </div>
+                        <div style="height: 60px">
+                            13
+                        </div>
+                        <div style="height: 60px">
+                            14
+                        </div>
+                        <div style="height: 60px">
+                            15
+                        </div>
+                        <div style="height: 60px">
+                            16
+                        </div>
+                        <div style="height: 60px">
+                            17
+                        </div>
+                        <div style="height: 60px">
+                            18
+                        </div>
+                        <div style="height: 60px">
+                            19
+                        </div>
+                        <div style="height: 60px">
+                            20
+                        </div>
+                    </td>
+                    <td>
+                        <div class="eventWarapper" id="eventWarapper_1">
+                            <div style="top: 60px;height: 60px" class="chip">dsfsdfsdf</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="eventWarapper" id="eventWarapper_2">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="eventWarapper" id="eventWarapper_3">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="eventWarapper" id="eventWarapper_4">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="eventWarapper" id="eventWarapper_5">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

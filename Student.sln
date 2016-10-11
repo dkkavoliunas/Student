@@ -14,6 +14,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Student.Models", "src\Stude
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Student.Collector", "src\Student.Collector\Student.Collector.xproj", "{D818ACF6-AAB1-425D-9CBC-A0B9B638A150}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Student.Repository", "src\Student.Repository\Student.Repository.xproj", "{46E4DDB4-CB1B-4436-B5D6-7603A511DB1F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Student.Web", "src\Student.Web\Student.Web.xproj", "{C0A3C38A-BC5C-453F-A9DE-F6AC54CB7572}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,14 @@ Global
 		{D818ACF6-AAB1-425D-9CBC-A0B9B638A150}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D818ACF6-AAB1-425D-9CBC-A0B9B638A150}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D818ACF6-AAB1-425D-9CBC-A0B9B638A150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E4DDB4-CB1B-4436-B5D6-7603A511DB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E4DDB4-CB1B-4436-B5D6-7603A511DB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E4DDB4-CB1B-4436-B5D6-7603A511DB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E4DDB4-CB1B-4436-B5D6-7603A511DB1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0A3C38A-BC5C-453F-A9DE-F6AC54CB7572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0A3C38A-BC5C-453F-A9DE-F6AC54CB7572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0A3C38A-BC5C-453F-A9DE-F6AC54CB7572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0A3C38A-BC5C-453F-A9DE-F6AC54CB7572}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +47,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0466D5A8-81E4-41F4-A395-6373B60C4CEF} = {95890732-30E8-49E0-860A-3772F7B816E2}
 		{D818ACF6-AAB1-425D-9CBC-A0B9B638A150} = {95890732-30E8-49E0-860A-3772F7B816E2}
+		{46E4DDB4-CB1B-4436-B5D6-7603A511DB1F} = {95890732-30E8-49E0-860A-3772F7B816E2}
+		{C0A3C38A-BC5C-453F-A9DE-F6AC54CB7572} = {95890732-30E8-49E0-860A-3772F7B816E2}
 	EndGlobalSection
 EndGlobal

@@ -5,8 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Student.Models;
+using Student.Repository;
+using Microsoft.EntityFrameworkCore.Design.Internal;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
+using NuGet.Packaging;
 
 namespace Student.Collector
 {
@@ -14,16 +21,45 @@ namespace Student.Collector
     {
         public static void Main(string[] args)
         {
-            var course = new Course {GroupCount = 5};
+            //var course = new Course {GroupCount = 5};
 
 
-            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-1-gr/", 1);
-            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-2-gr/", 2);
-            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-3-gr/", 3);
-            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-4-gr/", 4);
-            UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-5-gr/", 5);
+            //UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-1-gr/", 1);
+            //UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-2-gr/", 2);
+            //UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-3-gr/", 3);
+            //UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-4-gr/", 4);
+            //UpdateCourse(course, "https://mif.vu.lt/timetable/mif/groups/612i30001-programu-sistemos-3-k-5-gr/", 5);
 
-            RefactorCourse(course);
+            //RefactorCourse(course);
+
+            var context = new StudentContext(new DbContextOptionsBuilder().UseSqlServer("Server=(localdb)\\MSSQLLocalDb;Database=TheStudentDb;Trusted_Connection=true;MultipleActiveResultSets=true;").Options);
+            //context.Courses.Add(course);
+            // context.SaveChanges();
+            //ILoggerFactory loggerFactory = new LoggerFactory()
+            //    .AddDebug()
+            //    .AddConsole();
+
+            var serviceProvider = context.GetInfrastructure<IServiceProvider>();
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            loggerFactory.AddDebug()
+                .AddConsole();
+
+
+
+
+            var course = context.Courses.Include(c=>c.Subjects)
+                .ThenInclude(s => s.Groups)
+                .ThenInclude(g => g.Subgroups)
+                .ThenInclude(sg => sg.Lectures)
+                .FirstOrDefault();
+
+            var user = new User {Email = "dainius.kavoliunas@vu.mif.lt", Pasword = "12345678"};
+            user.Subscriptions.AddRange(course.Subjects.SelectMany(x => x.Groups).SelectMany(x => x.Subgroups).Where(x=>x.Group.Value == 1 && x.Value < 2).Select(x=>new Subscription { Subgroup = x}));
+
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            var u = context.Users.FirstOrDefault();
         }
 
         private static void RefactorCourse(Course course)
