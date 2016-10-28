@@ -24,14 +24,16 @@ namespace Student.Web.Controllers
         {
             var delta = DayOfWeek.Monday - DateTime.UtcNow.DayOfWeek;
             var monday = DateTime.UtcNow.AddDays(delta).Date;
-           
 
 
-            var user = _context.Users
+
+            var users = _context.Users
                 .Include(x => x.Subscriptions)
                 .ThenInclude(x => x.Subgroup)
-                .ThenInclude(x => x.Lectures)
-                .FirstOrDefault();
+                .ThenInclude(x => x.Lectures);
+
+            var user = users.First();
+                
 
 
             var lectures = user.Subscriptions

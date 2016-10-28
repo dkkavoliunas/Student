@@ -56,10 +56,12 @@ namespace Student.Collector
             var user = new User {Email = "dainius.kavoliunas@vu.mif.lt", Pasword = "12345678"};
             user.Subscriptions.AddRange(course.Subjects.SelectMany(x => x.Groups).SelectMany(x => x.Subgroups).Where(x=>x.Group.Value == 1 && x.Value < 2).Select(x=>new Subscription { Subgroup = x}));
 
-            context.Users.Add(user);
-            context.SaveChanges();
+            //context.Users.Add(user);
+            //context.SaveChanges();
 
-            var u = context.Users.FirstOrDefault();
+            var u = context.Users.Include(x => x.Subscriptions)
+                .ThenInclude(x => x.Subgroup)
+                .ThenInclude(x => x.Lectures);
         }
 
         private static void RefactorCourse(Course course)
